@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
-  m_Name: Stone
+  m_Name: Floor
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 8399011212269539787, guid: 68dac369a0fd07a4d972ceed499e2ff6, type: 3}
-  m_DefaultGameObject: {fileID: 8116440698526391561, guid: e8b63f23451f9174da0657485c87f8a3, type: 3}
+  m_DefaultSprite: {fileID: 199249360466117110, guid: c7e58974c1d61e14aa3b8751e1ea3d84, type: 3}
+  m_DefaultGameObject: {fileID: 7880475630207062827, guid: ac5a3a8facb1d4042835192e34408c13, type: 3}
   m_DefaultColliderType: 1
   m_TilingRules: []
