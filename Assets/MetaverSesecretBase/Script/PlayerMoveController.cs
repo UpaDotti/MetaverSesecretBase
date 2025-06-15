@@ -1,25 +1,29 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerController : NetworkBehaviour
+public class PlayerMoveController : MonoBehaviour
 {
+    private GameObject _player;
     private Rigidbody2D _rigidbody;
     private float _moveSpeed = 5f;
-    private Vector2 _moveInput;
 
+    private bool _isStart = false;
+    private Vector2 _moveInput;
     private Vector2 _touchStartPos;
     private Vector2 _touchCurrentPos;
     private bool _isTouching = false;
 
-    void Start()
+
+
+    public void StartMove(GameObject player)
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
+        _player = player;
+        _rigidbody = player.GetComponent<Rigidbody2D>();
+        _isStart = true;
     }
 
     void Update()
     {
-        if (!IsOwner) return;
-
 #if UNITY_EDITOR || UNITY_STANDALONE
         // PC：キーボード入力
         float moveX = Input.GetAxis("Horizontal");
@@ -61,8 +65,7 @@ public class PlayerController : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!IsOwner) return;
-
+        if (!_isStart) return;
         _rigidbody.linearVelocity = _moveInput * _moveSpeed;
     }
 }
