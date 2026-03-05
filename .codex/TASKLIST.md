@@ -8,10 +8,14 @@
 - [ ] 1. 最小動作（UI遷移の単体起動確認）
 - [ ] 2. 名前入力フロー確認（InputNameState）
 - [ ] 3. キャラ選択フロー確認（SelectCharacterState）
-- [ ] 4. Host/Client開始確認（SelectNetworkState）
-- [ ] 5. 同期と移動確認（NetworkPlayer/PlayerMoveController）
-- [ ] 6. テスト/確認（2クライアントで名前・キャラ同期）
-- [ ] 7. 仕上げ（ログ整理とドキュメント整合）
+- [x] 4. Relay接続実装（RelayConnectionService/SelectNetworkState差し替え）
+- [ ] 5. Host/Client開始確認（Relay経由）
+- [ ] 6. 同期と移動確認（NetworkPlayer/PlayerMoveController）
+- [ ] 7. テスト/確認（2クライアントで名前・キャラ同期）
+- [ ] 8. 仕上げ（ログ整理とドキュメント整合）
+- [x] 9. コメント規約反映（メソッド直上 `/// <summary>` 形式へ統一）
+- [x] 10. クラス図ドキュメント追加（入口と仕様リンク更新）
+- [x] 11. クラス図整理（全クラス列挙・メソッド表記省略）
 
 ## メモ（必要ならリンク）
 - 詳細：./.codex/tasks/（必要になったら作る）

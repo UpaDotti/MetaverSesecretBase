@@ -43,6 +43,19 @@ public class UIManager : MonoBehaviour
     private Button _clientButton;
     public Button ClientButton => _clientButton;
 
+    [Header("Network Select UI")]
+    [SerializeField]
+    private GameObject _joinCodeUI;
+    public GameObject JoinCodeUI => _joinCodeUI;
+
+    [SerializeField]
+    private TMP_InputField _joinCodeInputField;
+    public TMP_InputField JoinCodeInputField => _joinCodeInputField;
+
+    [SerializeField]
+    private Button _joinCodeFinishButton;
+    public Button JoinCodeFinishButton => _joinCodeFinishButton;
+
 
 
     public void ShowUI(UIState state)
@@ -50,6 +63,7 @@ public class UIManager : MonoBehaviour
         _nameInputUI.SetActive(state == UIState.NameInput);
         _characteSelectUI.SetActive(state == UIState.CharacterSelect);
         _networkSelectUI.SetActive(state == UIState.NetworkSelect);
+        _joinCodeUI.SetActive(state == UIState.JoinCodeInput);
     }
 }
 
@@ -58,5 +72,6 @@ public enum UIState
     None,
     NameInput,
     CharacterSelect,
-    NetworkSelect
+    NetworkSelect,
+    JoinCodeInput
 }

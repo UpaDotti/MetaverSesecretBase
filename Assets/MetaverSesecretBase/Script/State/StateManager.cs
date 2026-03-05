@@ -11,17 +11,24 @@ public class StateManager : MonoBehaviour
 
 
 
+    /// <summary>
+    /// 実行時に必要な参照を集め、状態遷移コンテキストを組み立てます。
+    /// </summary>
     private void Awake()
     {
         var networkManager = FindAnyObjectByType<NetworkManager>();
         var uiManager = FindAnyObjectByType<UIManager>();
         var playerManager = FindAnyObjectByType<PlayerManager>();
+        var relayConnectionService = FindAnyObjectByType<RelayConnectionService>();
 
-        _context = new StateContext(uiManager, playerManager, networkManager);
+        _context = new StateContext(uiManager, playerManager, networkManager, relayConnectionService);
     }
 
 
 
+    /// <summary>
+    /// 初期ステートフローを定義し、順次実行を開始します。
+    /// </summary>
     private void Start()
     {
         // 初期に入力のステートフロー
@@ -30,6 +37,7 @@ public class StateManager : MonoBehaviour
             new InputNameState(_context),
             new SelectCharacterState(_context),
             new SelectNetworkState(_context),
+            new InputJoinCodeState(_context),
         };
 
         ExecuteStateFlow(stateFlow);
@@ -38,14 +46,16 @@ public class StateManager : MonoBehaviour
 
 
     /// <summary>
-    /// ステートフローを実行
+    /// 指定ステート列をコルーチンで実行します。
     /// </summary>
-    /// <param name="states"></param>
     private void ExecuteStateFlow(List<IState> states)
     {
         StartCoroutine(RunExecuteStateFlow(states));
     }
 
+    /// <summary>
+    /// 完了イベントを待ちながら、ステートを順に進めます。
+    /// </summary>
     private IEnumerator RunExecuteStateFlow(List<IState> states)
     {
         foreach (IState state in states)
@@ -67,9 +77,8 @@ public class StateManager : MonoBehaviour
 
 
     /// <summary>
-    /// ステートを変更
+    /// 現在ステートを終了してから新ステートへ切り替えます。
     /// </summary>
-    /// <param name="newState"></param>
     public void ChangeState(IState newState)
     {
         _currentState?.Exit();

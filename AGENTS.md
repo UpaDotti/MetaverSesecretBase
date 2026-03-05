@@ -1,12 +1,16 @@
 ﻿## 0. ルール（要点）
 - 返答：日本語 / 箇条書き / 難語は短く説明 / 不足時のみ質問1つ
-- 更新順：SPEC → TASKLIST → PROGRESS →（必要なら）FAILURE_LOG
-- 実装：TASKLISTを上から。変更は小さく、都度確認
+- 更新順：必要であればドキュメントの更新を行う。SPEC → TASKLIST → PROGRESS → FAILURE_LOG
+- 実装：コードはまず最小でシンプルに書く。機能追加は必要になった時点で行う。TASKLISTを上から。変更は小さく、都度確認
 - 完了後：TASKLIST更新（[ ]→[x]）/ PROGRESS更新 / 失敗はログ
-- 設計：SOLID / 依存は外→内 / コメントは「なぜ」
+- 設計：SOLID / 依存は外→内 / コメントは適切な量とし「なにを」と「なぜ」を書く
+- コメント規約：処理のまとまりごとに1行 / 何をするかだけ / クラスやメソッド上部にも書く
+- コメント運用：既存コメントはできるだけ消さず、必要最小限の追記・修正で整える
+- 参照ルール：Inspector参照は最小限。未設定でも動くように、起動時の自動探索または注入方式を優先する
 
 ## 1. ドキュメント入口
 - 仕様：./.codex/SPEC.md
+- クラス図：./.codex/CLASS_DIAGRAM.md
 - タスク：./.codex/TASKLIST.md
 - 進捗：./.codex/PROGRESS.md
-- 失敗：./.codex/FAILURE_LOG.md/
+- 失敗：./.codex/FAILURE_LOG.md
