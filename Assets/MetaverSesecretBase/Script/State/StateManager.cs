@@ -37,7 +37,6 @@ public class StateManager : MonoBehaviour
             new InputNameState(_context),
             new SelectCharacterState(_context),
             new SelectNetworkState(_context),
-            new InputJoinCodeState(_context),
         };
 
         ExecuteStateFlow(stateFlow);

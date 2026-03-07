@@ -22,3 +22,8 @@
 - 詳細リンク：
   - ./.codex/spec/（必要になったら作る）
   - ./.codex/CLASS_DIAGRAM.md（設計上のクラス関係）
+
+## 2026-03-06 Lobby導入メモ
+- JoinCode手入力を必須から任意へ変更。
+- HostはRelay開始後にLobbyを作成し、joinCodeをLobby Dataへ保持。
+- ClientはLobby一覧から自動参加し、joinCodeを取得してRelay接続する。

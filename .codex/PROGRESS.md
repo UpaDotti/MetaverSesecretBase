@@ -16,3 +16,8 @@
 - Done（直近）：CLASS_DIAGRAM.mdを追加し、AGENTS/SPECの入口リンクを更新
 - Done（直近）：CLASS_DIAGRAM.mdを全クラス列挙・メソッド省略の見やすい構成へ更新
 - Blocked（あれば）：
+
+- 2026-03-06: Lobby導入を実装。Host時にLobby作成、Client時にLobby自動参加へ変更。
+- 2026-03-06: SelectNetworkStateのClient導線をJoinCode入力経由からLobby自動接続へ変更。
+- 2026-03-06: dotnet buildでコンパイル成功（警告1件のみ）。
+- 2026-03-06: CS1061対応としてIState.csのClient呼び出しをStartClientFromLobbyAsyncへ再統一し、JoinCode未入力による実行時失敗経路を回避。

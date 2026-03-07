@@ -148,8 +148,7 @@ public class SelectNetworkState : IState
     /// </summary>
     private void StartClient()
     {
-        _stateContext.IsClientSelected = true;
-        Complete();
+        _ = StartClientAsync();
     }
 
     /// <summary>
@@ -183,81 +182,40 @@ public class SelectNetworkState : IState
     }
 
     /// <summary>
+    /// Lobby経由のClient開始を行い、成功時に完了通知します。
+    /// </summary>
+    private async Task StartClientAsync()
+    {
+        // 多重実行防止
+        if (_isConnecting)
+        {
+            return;
+        }
+
+        // 接続開始
+        _isConnecting = true;
+        SetNetworkButtonsInteractable(false);
+
+        // Lobby自動参加でクライアント接続
+        bool started = await _stateContext.RelayConnectionService.StartClientFromLobbyAsync();
+        if (started)
+        {
+            Complete();
+            return;
+        }
+
+        // 接続失敗時は再度選択できるようにする
+        _isConnecting = false;
+        SetNetworkButtonsInteractable(true);
+    }
+
+    /// <summary>
     /// 接続中の誤操作防止のため、ボタン活性状態を切り替えます。
     /// </summary>
     private void SetNetworkButtonsInteractable(bool interactable)
     {
         _stateContext.UIManager.HostButton.interactable = interactable;
         _stateContext.UIManager.ClientButton.interactable = interactable;
-    }
-}
-
-/// <summary>
-/// JoinCode入力ステート
-/// </summary>
-public class InputJoinCodeState : IState
-{
-    private StateContext _stateContext;
-    private bool _isConnecting;
-    public event Action OnCompleted;
-
-    public InputJoinCodeState(StateContext stateContext)
-    {
-        _stateContext = stateContext;
-    }
-
-    void IState.Enter()
-    {
-        if (!_stateContext.IsClientSelected)
-        {
-            Complete();
-            return;
-        }
-
-        _stateContext.UIManager.ShowUI(UIState.JoinCodeInput);
-        _stateContext.UIManager.JoinCodeFinishButton.onClick.AddListener(StartClient);
-    }
-
-    void IState.Exit()
-    {
-        _stateContext.UIManager.JoinCodeFinishButton.onClick.RemoveAllListeners();
-        _stateContext.UIManager.JoinCodeFinishButton.interactable = true;
-    }
-
-    private void Complete()
-    {
-        OnCompleted?.Invoke();
-    }
-
-    private void StartClient()
-    {
-        _ = StartClientAsync();
-    }
-
-    private async Task StartClientAsync()
-    {
-        if (_isConnecting)
-        {
-            return;
-        }
-
-        _isConnecting = true;
-        _stateContext.UIManager.JoinCodeFinishButton.interactable = false;
-
-        string joinCode = _stateContext.UIManager.JoinCodeInputField != null
-            ? _stateContext.UIManager.JoinCodeInputField.text
-            : null;
-        bool started = await _stateContext.RelayConnectionService.StartClientAsync(joinCode);
-
-        if (started)
-        {
-            _stateContext.IsClientSelected = false;
-            Complete();
-            return;
-        }
-
-        _isConnecting = false;
-        _stateContext.UIManager.JoinCodeFinishButton.interactable = true;
     }
 }
 
@@ -299,7 +257,6 @@ public class StateContext
     public readonly PlayerManager PlayerManager;
     public readonly NetworkManager NetworkManager;
     public readonly RelayConnectionService RelayConnectionService;
-    public bool IsClientSelected;
 
     public StateContext(
         UIManager uiManager,
