@@ -15,6 +15,7 @@
 - Done（直近）：メソッド直上コメントを `/// <summary>` 形式へ統一し、関連箇所に反映
 - Done（直近）：CLASS_DIAGRAM.mdを追加し、AGENTS/SPECの入口リンクを更新
 - Done（直近）：CLASS_DIAGRAM.mdを全クラス列挙・メソッド省略の見やすい構成へ更新
+- Done（直近）：Play中のUIボタン押下でエモートをServerRpc送信し、NetworkPlayer頭上に2秒表示する同期を追加
 - Blocked（あれば）：
 
 - 2026-03-06: Lobby導入を実装。Host時にLobby作成、Client時にLobby自動参加へ変更。

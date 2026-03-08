@@ -235,11 +235,15 @@ public class PlayState : IState
     void IState.Enter()
     {
         _stateContext.UIManager.ShowUI(UIState.None);
+        _stateContext.UIManager.SetEmotePanelVisible(true);
+        _stateContext.UIManager.BindEmoteButtons(_stateContext.PlayerManager.SendEmote);
     }
 
     void IState.Exit()
     {
         _stateContext.UIManager.ShowUI(UIState.None);
+        _stateContext.UIManager.UnbindEmoteButtons();
+        _stateContext.UIManager.SetEmotePanelVisible(false);
     }
 
     private void Complete()

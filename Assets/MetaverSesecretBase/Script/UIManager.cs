@@ -1,4 +1,5 @@
 using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,6 +44,13 @@ public class UIManager : MonoBehaviour
     private Button _clientButton;
     public Button ClientButton => _clientButton;
 
+    [Header("Emote UI")]
+    [SerializeField]
+    private GameObject _emoteUI;
+
+    [SerializeField]
+    private Button[] _emoteButtons;
+
 
 
     public void ShowUI(UIState state)
@@ -50,6 +58,31 @@ public class UIManager : MonoBehaviour
         _nameInputUI.SetActive(state == UIState.NameInput);
         _characteSelectUI.SetActive(state == UIState.CharacterSelect);
         _networkSelectUI.SetActive(state == UIState.NetworkSelect);
+    }
+
+    /// <summary>
+    /// エモートUIの表示切替
+    /// </summary>
+    public void SetEmotePanelVisible(bool isVisible)
+    {
+        _emoteUI.SetActive(isVisible);
+    }
+
+    public void BindEmoteButtons(Action<int> onClickEmote)
+    {
+        for (int i = 0; i < _emoteButtons.Length; i++)
+        {
+            int emoteId = i;
+            _emoteButtons[i].onClick.AddListener(() => onClickEmote.Invoke(emoteId));
+        }
+    }
+
+    public void UnbindEmoteButtons()
+    {
+        for (int i = 0; i < _emoteButtons.Length; i++)
+        {
+            _emoteButtons[i].onClick.RemoveAllListeners();
+        }
     }
 }
 

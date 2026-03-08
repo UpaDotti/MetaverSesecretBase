@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
     public int CharacterId => _characterId;
 
     private PlayerMoveController _playerMoveController;
+    private NetworkPlayer _networkPlayer;
 
 
 
@@ -30,9 +31,9 @@ public class PlayerManager : MonoBehaviour
 
         NetworkObject playerObject = NetworkManager.Singleton.LocalClient.PlayerObject;
 
-        NetworkPlayer networkPlayer = playerObject.GetComponent<NetworkPlayer>();
-        networkPlayer.SetNameServerRpc(_name);
-        networkPlayer.SetCharacterServerRpc(_characterId);
+        _networkPlayer = playerObject.GetComponent<NetworkPlayer>();
+        _networkPlayer.SetNameServerRpc(_name);
+        _networkPlayer.SetCharacterServerRpc(_characterId);
 
         _playerMoveController.StartMove(playerObject.gameObject);
     }
@@ -45,5 +46,10 @@ public class PlayerManager : MonoBehaviour
     public void SetCharacterId(int characterId)
     {
         _characterId = characterId;
+    }
+
+    public void SendEmote(int emoteId)
+    {
+        _networkPlayer.SendEmoteServerRpc(emoteId);
     }
 }

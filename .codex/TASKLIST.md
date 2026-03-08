@@ -23,3 +23,4 @@
 - [x] 12. Lobby導入: HostのLobby作成/Heartbeat/削除を追加
 - [x] 13. Lobby導入: ClientのLobby自動参加でJoinCode入力を不要化
 - [x] 14. SelectNetworkStateのClient接続呼び出しをLobby自動参加（StartClientFromLobbyAsync）へ統一
+- [x] 15. エモート実装: Play中のUIボタン送信とNetworkPlayer頭上2秒表示の同期

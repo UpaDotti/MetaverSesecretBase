@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cebc278a501ea1e4e810f13522ee4257, type: 3}
+  m_Name: Emote Sprite DB
+  m_EditorClassIdentifier: Assembly-CSharp::EmoteSpriteDB
+  _emotes:
+  - {fileID: -855298285791758126, guid: d699f26cc12e671438e4638ea299144d, type: 3}
+  - {fileID: 6937817954938267909, guid: 0baa7868bb2432449ab2e3a02b94298e, type: 3}
+  - {fileID: -6470460504253458178, guid: 22f6682f4578dfe4f82e5a8cb12b821a, type: 3}
+  - {fileID: -4178046375966092550, guid: 6e4339919ff20cf489053b6aea4bf8a4, type: 3}
+  - {fileID: 4130640169021434097, guid: c731cc179ab65774098273ed127c7f5f, type: 3}
+  - {fileID: 3465286685962602723, guid: 63a937e587fb3354a90075228d712714, type: 3}
