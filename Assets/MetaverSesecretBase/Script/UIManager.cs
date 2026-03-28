@@ -1,4 +1,3 @@
-using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,16 +7,6 @@ using UnityEngine.UI;
 /// </summary>
 public class UIManager : MonoBehaviour
 {
-    [Header("Name Input UI")]
-    [SerializeField]
-    private GameObject _nameInputUI;
-
-    [SerializeField]
-    private TMP_InputField _nameInputField;
-
-    [SerializeField]
-    private Button _nameFinishButton;
-
     [Header("Characte Select UI")]
     [SerializeField]
     private GameObject _characteSelectUI;
@@ -46,33 +35,21 @@ public class UIManager : MonoBehaviour
     private Button[] _emoteButtons;
 
     /// <summary>
+    /// 起動時に旧uGUIの初期表示を閉じる
+    /// </summary>
+    private void Awake()
+    {
+        ShowUI(UIState.None);
+        _emoteUI?.SetActive(false);
+    }
+
+    /// <summary>
     /// 指定したメニューUIだけを表示
     /// </summary>
     public void ShowUI(UIState state)
     {
-        _nameInputUI.SetActive(state == UIState.NameInput);
-        _characteSelectUI.SetActive(state == UIState.CharacterSelect);
-        _networkSelectUI.SetActive(state == UIState.NetworkSelect);
-    }
-
-    /// <summary>
-    /// 名前入力UIを表示してイベントを購読
-    /// </summary>
-    public void ShowNameInput(Action<string> onNameChanged, Action onCompleted)
-    {
-        ShowUI(UIState.NameInput);
-        _nameInputField.onValueChanged.AddListener(onNameChanged.Invoke);
-        _nameFinishButton.onClick.AddListener(onCompleted.Invoke);
-    }
-
-    /// <summary>
-    /// 名前入力UIのイベント購読を解除
-    /// </summary>
-    public void HideNameInput(Action<string> onNameChanged)
-    {
-        ShowUI(UIState.None);
-        _nameInputField.onValueChanged.RemoveListener(onNameChanged.Invoke);
-        _nameFinishButton.onClick.RemoveAllListeners();
+        _characteSelectUI?.SetActive(state == UIState.CharacterSelect);
+        _networkSelectUI?.SetActive(state == UIState.NetworkSelect);
     }
 
     /// <summary>
@@ -126,7 +103,6 @@ public class UIManager : MonoBehaviour
 public enum UIState
 {
     None,
-    NameInput,
     CharacterSelect,
     NetworkSelect
 }

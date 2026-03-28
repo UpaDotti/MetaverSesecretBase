@@ -1,0 +1,30 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="name-input-root" class="name-input-root">
+        <ui:VisualElement class="name-input-shell panel-shell">
+            <ui:VisualElement class="name-input-panel panel-surface">
+                <ui:VisualElement class="panel-header">
+                    <ui:VisualElement class="panel-header__text">
+                        <ui:Label text="プレイヤー名" class="panel-title" />
+                        <ui:Label text="あとから見分けやすい名前を入力してください" class="panel-caption" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="panel-content">
+                    <ui:VisualElement class="section-header">
+                        <ui:Label text="名前を入力" class="section-title" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement class="form-surface">
+                        <ui:Label text="名前" class="field-label" />
+                        <ui:TextField name="name-input-field" class="name-input-field" />
+                        <ui:Label text="入力後に確定するとキャラ選択へ進みます" class="form-hint" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement class="section-actions">
+                        <ui:Button name="name-confirm-button" text="この名前で進む" class="primary-button action-button" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

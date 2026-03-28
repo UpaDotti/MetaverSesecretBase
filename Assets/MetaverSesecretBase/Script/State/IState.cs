@@ -29,12 +29,18 @@ public class InputNameState : IState
 
     void IState.Enter()
     {
-        _stateContext.UIManager.ShowNameInput(_stateContext.PlayerManager.SetName, Complete);
+        _stateContext.NameInputUIController.SetName(_stateContext.PlayerManager.Name);
+        _stateContext.NameInputUIController.SetInteractable(true);
+        _stateContext.NameInputUIController.NameChanged += _stateContext.PlayerManager.SetName;
+        _stateContext.NameInputUIController.Submitted += Complete;
+        _stateContext.NameInputUIController.Show();
     }
 
     void IState.Exit()
     {
-        _stateContext.UIManager.HideNameInput(_stateContext.PlayerManager.SetName);
+        _stateContext.NameInputUIController.NameChanged -= _stateContext.PlayerManager.SetName;
+        _stateContext.NameInputUIController.Submitted -= Complete;
+        _stateContext.NameInputUIController.Hide();
     }
 
     private void Complete()
@@ -346,6 +352,7 @@ public class PlayState : IState
 public class StateContext
 {
     public readonly UIManager UIManager;
+    public readonly NameInputUIController NameInputUIController;
     public readonly RoomBrowserUIController RoomBrowserUIController;
     public readonly PlayerManager PlayerManager;
     public readonly NetworkManager NetworkManager;
@@ -353,12 +360,14 @@ public class StateContext
 
     public StateContext(
         UIManager uiManager,
+        NameInputUIController nameInputUIController,
         RoomBrowserUIController roomBrowserUIController,
         PlayerManager playerManager,
         NetworkManager networkManager,
         RelayConnectionService relayConnectionService)
     {
         UIManager = uiManager;
+        NameInputUIController = nameInputUIController;
         RoomBrowserUIController = roomBrowserUIController;
         PlayerManager = playerManager;
         NetworkManager = networkManager;

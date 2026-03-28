@@ -1,9 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
-    <ui:Style src="project://database/Assets/Resources/UI/RoomBrowser.uss?fileID=7433441132597879392&amp;guid=e2f3a4b5c6d7890123456789abcdef01&amp;type=3#RoomBrowser" />
-
     <ui:VisualElement name="room-browser-root" class="room-browser-root">
-        <ui:VisualElement class="room-browser-shell">
-            <ui:VisualElement class="room-browser-panel">
+        <ui:VisualElement class="room-browser-shell panel-shell">
+            <ui:VisualElement class="room-browser-panel panel-surface">
                 <ui:VisualElement class="panel-header">
                     <ui:VisualElement class="panel-header__text">
                         <ui:Label text="部屋一覧" class="panel-title" />

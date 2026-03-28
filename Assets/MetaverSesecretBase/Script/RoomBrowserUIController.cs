@@ -10,6 +10,7 @@ public class RoomBrowserUIController : MonoBehaviour
 {
     private const string LogPrefix = "[RoomBrowserUI]";
     private const string PanelSettingsResourcePath = "UI/RoomBrowserPanelSettings";
+    private const string CommonStyleResourcePath = "UI/CommonMenu";
     private const string LayoutResourcePath = "UI/RoomBrowser";
     private const string StyleResourcePath = "UI/RoomBrowser";
     private const string HiddenClassName = "is-hidden";
@@ -71,10 +72,11 @@ public class RoomBrowserUIController : MonoBehaviour
     private void InitializeDocument()
     {
         PanelSettings panelSettingsAsset = Resources.Load<PanelSettings>(PanelSettingsResourcePath);
+        StyleSheet commonStyleSheet = Resources.Load<StyleSheet>(CommonStyleResourcePath);
         VisualTreeAsset layoutAsset = Resources.Load<VisualTreeAsset>(LayoutResourcePath);
         StyleSheet styleSheet = Resources.Load<StyleSheet>(StyleResourcePath);
 
-        if (panelSettingsAsset == null || layoutAsset == null || styleSheet == null)
+        if (panelSettingsAsset == null || commonStyleSheet == null || layoutAsset == null || styleSheet == null)
         {
             Debug.LogError($"{LogPrefix} Failed to load UI Toolkit resources.");
             return;
@@ -93,6 +95,7 @@ public class RoomBrowserUIController : MonoBehaviour
         _root = _uiDocument.rootVisualElement;
         _root.Clear();
         layoutAsset.CloneTree(_root);
+        _root.styleSheets.Add(commonStyleSheet);
         _root.styleSheets.Add(styleSheet);
         LogPanelSettingsState("InitializeDocument");
     }

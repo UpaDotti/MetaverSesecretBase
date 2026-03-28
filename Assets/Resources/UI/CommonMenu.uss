@@ -1,0 +1,151 @@
+/* メニュー全体の外枠 */
+.panel-shell {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-width: none;
+}
+
+/* メニューパネル本体 */
+.panel-surface {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: rgb(245, 240, 228);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgb(84, 68, 53);
+    border-right-color: rgb(84, 68, 53);
+    border-top-color: rgb(84, 68, 53);
+    border-bottom-color: rgb(84, 68, 53);
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+/* ヘッダー */
+.panel-header {
+    flex-shrink: 0;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.panel-header__text {
+    flex-direction: column;
+}
+
+.panel-title {
+    font-size: 26px;
+    -unity-font-style: bold;
+    color: rgb(48, 39, 30);
+}
+
+.panel-caption {
+    font-size: 14px;
+    color: rgb(127, 101, 74);
+    margin-top: 6px;
+}
+
+/* 本文 */
+.panel-content {
+    flex-grow: 1;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.section-header {
+    flex-shrink: 0;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-size: 17px;
+    -unity-font-style: bold;
+    color: rgb(67, 53, 40);
+}
+
+.panel-status {
+    min-height: 18px;
+    font-size: 14px;
+    color: rgb(111, 86, 60);
+    margin-top: 4px;
+}
+
+/* 入力面 */
+.form-surface {
+    flex-shrink: 0;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.58);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgb(190, 176, 156);
+    border-right-color: rgb(190, 176, 156);
+    border-top-color: rgb(190, 176, 156);
+    border-bottom-color: rgb(190, 176, 156);
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.field-label {
+    font-size: 16px;
+    -unity-font-style: bold;
+    color: rgb(67, 53, 40);
+}
+
+.form-hint {
+    font-size: 14px;
+    color: rgb(120, 96, 72);
+    margin-top: 8px;
+}
+
+/* ボタン */
+.section-actions {
+    flex-shrink: 0;
+}
+
+.action-button {
+    width: 100%;
+    min-width: 0;
+    height: 48px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+.primary-button {
+    background-color: rgb(191, 123, 71);
+    color: rgb(255, 248, 241);
+}
+
+.secondary-button {
+    background-color: rgb(224, 214, 197);
+    color: rgb(57, 46, 35);
+}
+
+/* 非表示制御 */
+.is-hidden {
+    display: none;
+}

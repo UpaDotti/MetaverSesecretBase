@@ -5,7 +5,7 @@
 
 ## 実行順
 - [x] 1. 共通土台: UIManager の公開APIと UI Toolkit 管理責務を整理
-- [ ] 2. 名前入力UI: 入力と確定導線の UI Toolkit 化方針を整理
+- [x] 2. 名前入力UI: 入力と確定導線の UI Toolkit 化方針を整理
 - [ ] 3. キャラ選択UI: 選択導線の UI Toolkit 化方針を整理
 - [ ] 4. 接続選択UI: 必要有無を含め UI 構成を整理
 - [ ] 5. エモート操作UI: Play 中UIの UI Toolkit 化方針を整理
