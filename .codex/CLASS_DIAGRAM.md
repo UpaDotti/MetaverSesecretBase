@@ -65,6 +65,6 @@ classDiagram
 - 各 `*State` は `StateContext` 経由で必要機能にアクセスします。
 - `RelayConnectionService` は Relay 接続の専用責務で、`SelectNetworkState` から呼ばれます。
 - `PlayerManager` はローカル入力結果を `NetworkPlayer` 初期化と移動開始に反映します。
-- `StateContext` は現状 `UIManager` と `RoomBrowserUIController` の二系統UIを保持します。
-- `RoomBrowserUIController` は UI Toolkit 化済みの部屋一覧UIを担当します。
-- `UIManager` は現状 uGUI 依存のメニューUI管理で、今後は UI Toolkit ベースへ寄せる前提です。
+- `StateContext` は `UIManager` と `RoomBrowserUIController` の二系統UIを保持します。
+- `UIManager` は未移行の uGUI メニューUIと Play UI の facade です。
+- `RoomBrowserUIController` は RoomBrowser 専用の UI Toolkit 管理を担当します。

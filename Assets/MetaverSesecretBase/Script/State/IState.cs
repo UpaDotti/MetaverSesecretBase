@@ -29,18 +29,12 @@ public class InputNameState : IState
 
     void IState.Enter()
     {
-        _stateContext.UIManager.ShowUI(UIState.NameInput);
-
-        _stateContext.UIManager.NameInputField.onValueChanged.AddListener(_stateContext.PlayerManager.SetName);
-        _stateContext.UIManager.NameFinishButton.onClick.AddListener(Complete);
+        _stateContext.UIManager.ShowNameInput(_stateContext.PlayerManager.SetName, Complete);
     }
 
     void IState.Exit()
     {
-        _stateContext.UIManager.ShowUI(UIState.None);
-
-        _stateContext.UIManager.NameInputField.onValueChanged.RemoveListener(_stateContext.PlayerManager.SetName);
-        _stateContext.UIManager.NameFinishButton.onClick.RemoveAllListeners();
+        _stateContext.UIManager.HideNameInput(_stateContext.PlayerManager.SetName);
     }
 
     private void Complete()
@@ -64,18 +58,12 @@ public class SelectCharacterState : IState
 
     void IState.Enter()
     {
-        _stateContext.UIManager.ShowUI(UIState.CharacterSelect);
-
-        _stateContext.UIManager.CharacterButton0.onClick.AddListener(() => SetCharacterId(0));
-        _stateContext.UIManager.CharacterButton1.onClick.AddListener(() => SetCharacterId(1));
+        _stateContext.UIManager.ShowCharacterSelect(SetCharacterId);
     }
 
     void IState.Exit()
     {
-        _stateContext.UIManager.ShowUI(UIState.None);
-
-        _stateContext.UIManager.CharacterButton0.onClick.RemoveAllListeners();
-        _stateContext.UIManager.CharacterButton1.onClick.RemoveAllListeners();
+        _stateContext.UIManager.HideCharacterSelect();
     }
 
     private void Complete()
@@ -337,15 +325,13 @@ public class PlayState : IState
     void IState.Enter()
     {
         _stateContext.UIManager.ShowUI(UIState.None);
-        _stateContext.UIManager.SetEmotePanelVisible(true);
-        _stateContext.UIManager.BindEmoteButtons(_stateContext.PlayerManager.SendEmote);
+        _stateContext.UIManager.ShowPlayUI(_stateContext.PlayerManager.SendEmote);
     }
 
     void IState.Exit()
     {
         _stateContext.UIManager.ShowUI(UIState.None);
-        _stateContext.UIManager.UnbindEmoteButtons();
-        _stateContext.UIManager.SetEmotePanelVisible(false);
+        _stateContext.UIManager.HidePlayUI();
     }
 
     private void Complete()
