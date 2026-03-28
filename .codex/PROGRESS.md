@@ -1,24 +1,17 @@
-## 運用ルール
+﻿## 運用ルール
 - 上限：80行を超えたら圧縮
-- 圧縮：Doneは「直近だけ」にして古い行は消す（重要ならSPEC側に残す）
-- Nextは最大3つまで（迷子防止）
+- `Done` は直近だけ残す
+- `Next` は最大 3 つまで
 
 ## 状態
-- 進捗：35%
-- Doing：Relay接続の動作確認
+- 進捗：90%
+- Doing：RoomBrowser の最終確認とドキュメント圧縮
 - Next：
-  1. Host起動時のJoin Code発行確認
-  2. Clientの自動Join（環境変数/設定アセット）確認
-  3. 2クライアント同期確認
-- Done（直近）：RelayConnectionService追加とSelectNetworkStateのRelay化を実装
-- Done（直近）：Relay依存の版不整合はユーザー手動対応で解決、失敗ログを事実ベースへ修正
-- Done（直近）：メソッド直上コメントを `/// <summary>` 形式へ統一し、関連箇所に反映
-- Done（直近）：CLASS_DIAGRAM.mdを追加し、AGENTS/SPECの入口リンクを更新
-- Done（直近）：CLASS_DIAGRAM.mdを全クラス列挙・メソッド省略の見やすい構成へ更新
-- Done（直近）：Play中のUIボタン押下でエモートをServerRpc送信し、NetworkPlayer頭上に2秒表示する同期を追加
-- Blocked（あれば）：
-
-- 2026-03-06: Lobby導入を実装。Host時にLobby作成、Client時にLobby自動参加へ変更。
-- 2026-03-06: SelectNetworkStateのClient導線をJoinCode入力経由からLobby自動接続へ変更。
-- 2026-03-06: dotnet buildでコンパイル成功（警告1件のみ）。
-- 2026-03-06: CS1061対応としてIState.csのClient呼び出しをStartClientFromLobbyAsyncへ再統一し、JoinCode未入力による実行時失敗経路を回避。
+  1. Unity Editor で Android 横向き想定サイズの RoomBrowser 収まり確認
+  2. Android 実機で RoomBrowser の文字サイズと操作サイズの最終確認
+  3. 2クライアントで一覧参加と同期確認
+- Done（直近）：RoomBrowser を Android 横向き前提の UI Toolkit 構成へ整理した
+- Done（直近）：RoomBrowser を `参加 / 作成` タブ切替へ整理した
+- Done（直近）：PanelSettings 実行時上書きと DPI / 解像度ログを追加した
+- Done（直近）：Lobby 一覧更新の 429 対策を追加した
+- Done（直近）：今回の変更を `git staging` で確認できる状態へ反映した

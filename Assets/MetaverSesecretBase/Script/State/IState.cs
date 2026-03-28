@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
@@ -91,44 +91,69 @@ public class SelectCharacterState : IState
 }
 
 /// <summary>
-/// ネットワーク選択ステート
+/// 部屋一覧ステート
 /// </summary>
-public class SelectNetworkState : IState
+public class RoomBrowseState : IState
 {
+    private const int RefreshIntervalMilliseconds = 10000;
+    private const int RateLimitCooldownMilliseconds = 15000;
+
     private StateContext _stateContext;
-    private bool _isConnecting;
+    private bool _isActive;
+    private bool _isProcessing;
+    private bool _isRefreshing;
+    private int _refreshLoopVersion;
+    private DateTime _nextRefreshAllowedAtUtc = DateTime.MinValue;
     public event Action OnCompleted;
 
-    public SelectNetworkState(StateContext stateContext)
+    public RoomBrowseState(StateContext stateContext)
     {
         _stateContext = stateContext;
     }
 
     /// <summary>
-    /// ネットワーク選択UIを表示し、Host/Clientの入力受付を開始します。
+    /// 部屋一覧UIを表示してイベント購読を開始します。
     /// </summary>
     void IState.Enter()
     {
-        _stateContext.UIManager.ShowUI(UIState.NetworkSelect);
+        Debug.Log("[RoomBrowseState] Enter");
+        _isActive = true;
+        _isProcessing = false;
 
-        _stateContext.UIManager.HostButton.onClick.AddListener(StartHost);
-        _stateContext.UIManager.ClientButton.onClick.AddListener(StartClient);
+        _stateContext.RoomBrowserUIController.RefreshRequested += OnRefreshRequested;
+        _stateContext.RoomBrowserUIController.JoinRequested += OnJoinRequested;
+        _stateContext.RoomBrowserUIController.CreateSubmitted += OnCreateSubmitted;
+
+        _stateContext.RoomBrowserUIController.ShowRoomList();
+        _stateContext.RoomBrowserUIController.SetRoomListInteractable(true);
+        _stateContext.RoomBrowserUIController.SetRoomCreateInteractable(true);
+        _stateContext.RoomBrowserUIController.ClearRoomName();
+        _stateContext.RoomBrowserUIController.SetListStatus("部屋一覧を取得しています...");
+        _stateContext.RoomBrowserUIController.SetCreateStatus(string.Empty);
+
+        _ = RefreshRoomListAsync(true);
+        _ = RunAutoRefreshLoopAsync(++_refreshLoopVersion);
     }
 
     /// <summary>
-    /// イベントを解除し、次回再入時の多重登録を防ぎます。
+    /// イベント購読と表示を解除します。
     /// </summary>
     void IState.Exit()
     {
-        _stateContext.UIManager.ShowUI(UIState.None);
+        _isActive = false;
+        _refreshLoopVersion++;
 
-        _stateContext.UIManager.HostButton.onClick.RemoveAllListeners();
-        _stateContext.UIManager.ClientButton.onClick.RemoveAllListeners();
-        SetNetworkButtonsInteractable(true);
+        _stateContext.RoomBrowserUIController.RefreshRequested -= OnRefreshRequested;
+        _stateContext.RoomBrowserUIController.JoinRequested -= OnJoinRequested;
+        _stateContext.RoomBrowserUIController.CreateSubmitted -= OnCreateSubmitted;
+
+        _stateContext.RoomBrowserUIController.Hide();
+        _stateContext.RoomBrowserUIController.SetListStatus(string.Empty);
+        _stateContext.RoomBrowserUIController.SetCreateStatus(string.Empty);
     }
 
     /// <summary>
-    /// ステート完了を通知して次フェーズへ進めます。
+    /// ステート完了を通知します。
     /// </summary>
     private void Complete()
     {
@@ -136,86 +161,163 @@ public class SelectNetworkState : IState
     }
 
     /// <summary>
-    /// Host接続の非同期開始を起動します。
+    /// 一覧更新要求を処理します。
     /// </summary>
-    private void StartHost()
+    private void OnRefreshRequested()
     {
-        _ = StartHostAsync();
+        _ = RefreshRoomListAsync(true);
     }
 
     /// <summary>
-    /// Client接続の非同期開始を起動します。
+    /// 部屋参加要求を処理します。
     /// </summary>
-    private void StartClient()
+    private void OnJoinRequested(string lobbyId)
     {
-        _ = StartClientAsync();
+        _ = JoinRoomAsync(lobbyId);
     }
 
     /// <summary>
-    /// Host開始の排他制御とUI制御を行い、成功時に完了通知します。
+    /// 部屋作成要求を処理します。
     /// </summary>
-    private async Task StartHostAsync()
+    private void OnCreateSubmitted(string roomName)
     {
-        // 多重実行防止
-        if (_isConnecting)
+        _ = CreateRoomAsync(roomName);
+    }
+
+    /// <summary>
+    /// 一覧自動更新を繰り返し実行します。
+    /// </summary>
+    private async Task RunAutoRefreshLoopAsync(int loopVersion)
+    {
+        while (_isActive && loopVersion == _refreshLoopVersion)
+        {
+            await Task.Delay(RefreshIntervalMilliseconds);
+
+            if (!_isActive || loopVersion != _refreshLoopVersion || _isProcessing)
+            {
+                continue;
+            }
+
+            await RefreshRoomListAsync(false);
+        }
+    }
+
+    /// <summary>
+    /// 部屋一覧を取得してUIへ反映します。
+    /// </summary>
+    private async Task RefreshRoomListAsync(bool showRefreshingMessage)
+    {
+        if (!_isActive || _isProcessing || _isRefreshing)
         {
             return;
         }
 
-        //　接続開始
-        _isConnecting = true;
-        SetNetworkButtonsInteractable(false);
+        if (DateTime.UtcNow < _nextRefreshAllowedAtUtc)
+        {
+            if (showRefreshingMessage)
+            {
+                _stateContext.RoomBrowserUIController.SetListStatus("少し待ってから再度更新してください");
+            }
 
-        // ホスト接続開始
-        bool started = await _stateContext.RelayConnectionService.StartHostAsync();
+            return;
+        }
 
-        //　接続完了
+        try
+        {
+            _isRefreshing = true;
+
+            if (showRefreshingMessage)
+            {
+                _stateContext.RoomBrowserUIController.SetListStatus("部屋一覧を更新しています...");
+            }
+
+            var rooms = await _stateContext.RelayConnectionService.QueryAvailableLobbiesAsync();
+
+            if (!_isActive)
+            {
+                return;
+            }
+
+            _stateContext.RoomBrowserUIController.SetRooms(rooms);
+            _stateContext.RoomBrowserUIController.SetListStatus($"部屋数: {rooms.Count}");
+        }
+        catch (Exception ex)
+        {
+            if (IsRateLimitError(ex))
+            {
+                _nextRefreshAllowedAtUtc = DateTime.UtcNow.AddMilliseconds(RateLimitCooldownMilliseconds);
+                Debug.LogWarning($"[RoomBrowse] Refresh rate limited. cooldownMs={RateLimitCooldownMilliseconds}");
+                _stateContext.RoomBrowserUIController.SetListStatus("更新が多いため少し待ってから再試行します");
+                return;
+            }
+
+            Debug.LogWarning($"[RoomBrowse] Refresh failed: {ex.Message}");
+            _stateContext.RoomBrowserUIController.SetListStatus("部屋一覧の取得に失敗しました");
+        }
+        finally
+        {
+            _isRefreshing = false;
+        }
+    }
+
+    /// <summary>
+    /// Lobby一覧更新のレート制限を検出
+    /// </summary>
+    private bool IsRateLimitError(Exception ex)
+    {
+        return ex.Message.Contains("Too Many Requests", StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// 選択した部屋へ接続します。
+    /// </summary>
+    private async Task JoinRoomAsync(string lobbyId)
+    {
+        if (_isProcessing || !_isActive)
+        {
+            return;
+        }
+
+        _isProcessing = true;
+        _stateContext.RoomBrowserUIController.SetRoomListInteractable(false);
+        _stateContext.RoomBrowserUIController.SetListStatus("部屋に参加しています...");
+
+        bool started = await _stateContext.RelayConnectionService.StartClientFromLobbyAsync(lobbyId);
         if (started)
         {
             Complete();
             return;
         }
 
-        // 接続失敗時は再度選択できるようにする
-        _isConnecting = false;
-        SetNetworkButtonsInteractable(true);
+        _isProcessing = false;
+        _stateContext.RoomBrowserUIController.SetRoomListInteractable(true);
+        _stateContext.RoomBrowserUIController.SetListStatus("部屋への参加に失敗しました");
     }
 
     /// <summary>
-    /// Lobby経由のClient開始を行い、成功時に完了通知します。
+    /// 新しい部屋を作成してホスト開始します。
     /// </summary>
-    private async Task StartClientAsync()
+    private async Task CreateRoomAsync(string roomName)
     {
-        // 多重実行防止
-        if (_isConnecting)
+        if (_isProcessing || !_isActive)
         {
             return;
         }
 
-        // 接続開始
-        _isConnecting = true;
-        SetNetworkButtonsInteractable(false);
+        _isProcessing = true;
+        _stateContext.RoomBrowserUIController.SetRoomCreateInteractable(false);
+        _stateContext.RoomBrowserUIController.SetCreateStatus("部屋を作成しています...");
 
-        // Lobby自動参加でクライアント接続
-        bool started = await _stateContext.RelayConnectionService.StartClientFromLobbyAsync();
+        bool started = await _stateContext.RelayConnectionService.StartHostAsync(roomName);
         if (started)
         {
             Complete();
             return;
         }
 
-        // 接続失敗時は再度選択できるようにする
-        _isConnecting = false;
-        SetNetworkButtonsInteractable(true);
-    }
-
-    /// <summary>
-    /// 接続中の誤操作防止のため、ボタン活性状態を切り替えます。
-    /// </summary>
-    private void SetNetworkButtonsInteractable(bool interactable)
-    {
-        _stateContext.UIManager.HostButton.interactable = interactable;
-        _stateContext.UIManager.ClientButton.interactable = interactable;
+        _isProcessing = false;
+        _stateContext.RoomBrowserUIController.SetRoomCreateInteractable(true);
+        _stateContext.RoomBrowserUIController.SetCreateStatus("部屋の作成に失敗しました");
     }
 }
 
@@ -258,20 +360,22 @@ public class PlayState : IState
 public class StateContext
 {
     public readonly UIManager UIManager;
+    public readonly RoomBrowserUIController RoomBrowserUIController;
     public readonly PlayerManager PlayerManager;
     public readonly NetworkManager NetworkManager;
     public readonly RelayConnectionService RelayConnectionService;
 
     public StateContext(
         UIManager uiManager,
+        RoomBrowserUIController roomBrowserUIController,
         PlayerManager playerManager,
         NetworkManager networkManager,
         RelayConnectionService relayConnectionService)
     {
         UIManager = uiManager;
+        RoomBrowserUIController = roomBrowserUIController;
         PlayerManager = playerManager;
         NetworkManager = networkManager;
         RelayConnectionService = relayConnectionService;
     }
 }
-

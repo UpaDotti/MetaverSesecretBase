@@ -11,7 +11,6 @@ public class PlayerMoveController : MonoBehaviour
     private Vector2 _moveInput;
     private Vector2 _touchStartPos;
     private Vector2 _touchCurrentPos;
-    private bool _isTouching = false;
 
 
 
@@ -25,13 +24,13 @@ public class PlayerMoveController : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
-        // PCFƒL[ƒ{[ƒh“ü—Í
+        // PCï¼šã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å…¥åŠ›
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
         _moveInput = new Vector2(moveX, moveY).normalized;
 
 #else
-        // ƒ‚ƒoƒCƒ‹Fƒ^ƒbƒ`ƒXƒ‰ƒCƒh“ü—Í
+        // ãƒ¢ãƒã‚¤ãƒ«ï¼šã‚¿ãƒƒãƒã‚¹ãƒ©ã‚¤ãƒ‰å…¥åŠ›
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -40,23 +39,18 @@ public class PlayerMoveController : MonoBehaviour
             {
                 case TouchPhase.Began:
                     _touchStartPos = touch.position;
-                    _isTouching = true;
                     break;
 
                 case TouchPhase.Moved:
                 case TouchPhase.Stationary:
-                    if (_isTouching)
-                    {
-                        _touchCurrentPos = touch.position;
-                        Vector2 delta = _touchCurrentPos - _touchStartPos;
-                        _moveInput = delta.normalized;
-                    }
+                    _touchCurrentPos = touch.position;
+                    Vector2 delta = _touchCurrentPos - _touchStartPos;
+                    _moveInput = delta.normalized;
                     break;
 
                 case TouchPhase.Ended:
                 case TouchPhase.Canceled:
                     _moveInput = Vector2.zero;
-                    _isTouching = false;
                     break;
             }
         }

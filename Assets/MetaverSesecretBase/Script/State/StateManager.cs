@@ -18,10 +18,11 @@ public class StateManager : MonoBehaviour
     {
         var networkManager = FindAnyObjectByType<NetworkManager>();
         var uiManager = FindAnyObjectByType<UIManager>();
+        var roomBrowserUIController = FindAnyObjectByType<RoomBrowserUIController>();
         var playerManager = FindAnyObjectByType<PlayerManager>();
         var relayConnectionService = FindAnyObjectByType<RelayConnectionService>();
 
-        _context = new StateContext(uiManager, playerManager, networkManager, relayConnectionService);
+        _context = new StateContext(uiManager, roomBrowserUIController, playerManager, networkManager, relayConnectionService);
     }
 
 
@@ -36,7 +37,7 @@ public class StateManager : MonoBehaviour
         {
             new InputNameState(_context),
             new SelectCharacterState(_context),
-            new SelectNetworkState(_context),
+            new RoomBrowseState(_context),
         };
 
         ExecuteStateFlow(stateFlow);

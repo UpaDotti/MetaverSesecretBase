@@ -1,0 +1,56 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="project://database/Assets/Resources/UI/RoomBrowser.uss?fileID=7433441132597879392&amp;guid=e2f3a4b5c6d7890123456789abcdef01&amp;type=3#RoomBrowser" />
+
+    <ui:VisualElement name="room-browser-root" class="room-browser-root">
+        <ui:VisualElement class="room-browser-shell">
+            <ui:VisualElement class="room-browser-panel">
+                <ui:VisualElement class="panel-header">
+                    <ui:VisualElement class="panel-header__text">
+                        <ui:Label text="部屋一覧" class="panel-title" />
+                        <ui:Label text="参加と作成を切り替えながら操作してください" class="panel-caption" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement class="tab-bar">
+                        <ui:Button name="show-list-tab-button" text="参加" class="tab-button" />
+                        <ui:Button name="show-create-tab-button" text="作成" class="tab-button tab-button--last" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="panel-content">
+                    <ui:VisualElement name="room-list-section" class="tab-section">
+                        <ui:VisualElement class="section-header">
+                            <ui:Label text="参加する部屋" class="section-title" />
+                            <ui:Label name="list-status-label" class="panel-status" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="list-surface">
+                            <ui:Label name="empty-label" text="参加できる部屋がありません" class="empty-label" />
+                            <ui:ListView name="room-list-view" class="room-list-view" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="section-actions">
+                            <ui:Button name="refresh-button" text="一覧を更新" class="secondary-button action-button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+
+                    <ui:VisualElement name="room-create-section" class="tab-section is-hidden">
+                        <ui:VisualElement class="section-header">
+                            <ui:Label text="新しい部屋を作成" class="section-title" />
+                            <ui:Label name="create-status-label" class="panel-status" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="form-surface">
+                            <ui:Label text="部屋名" class="field-label" />
+                            <ui:TextField name="room-name-field" class="room-name-field" />
+                            <ui:Label text="短く分かりやすい名前にしてください" class="form-hint" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="section-actions">
+                            <ui:Button name="create-button" text="この名前で作成" class="primary-button action-button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

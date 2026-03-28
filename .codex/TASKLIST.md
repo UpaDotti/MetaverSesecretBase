@@ -1,26 +1,19 @@
-## 運用ルール
+﻿## 運用ルール
 - 上限：200行を超えたら圧縮
-- 圧縮：細かい手順は ./ .codex/tasks/ に逃がし、ここは「実行順の目次」に戻す
-- 実装はこの順で上から進める（小さく変更→確認）
+- ここは実行順の目次に保つ
+- 変更は小さく、確認しながら進める
 
-## 実行順（目次）
-- [ ] 0. セットアップ
-- [ ] 1. 最小動作（UI遷移の単体起動確認）
-- [ ] 2. 名前入力フロー確認（InputNameState）
-- [ ] 3. キャラ選択フロー確認（SelectCharacterState）
-- [x] 4. Relay接続実装（RelayConnectionService/SelectNetworkState差し替え）
-- [ ] 5. Host/Client開始確認（Relay経由）
-- [ ] 6. 同期と移動確認（NetworkPlayer/PlayerMoveController）
-- [ ] 7. テスト/確認（2クライアントで名前・キャラ同期）
-- [ ] 8. 仕上げ（ログ整理とドキュメント整合）
-- [x] 9. コメント規約反映（メソッド直上 `/// <summary>` 形式へ統一）
-- [x] 10. クラス図ドキュメント追加（入口と仕様リンク更新）
-- [x] 11. クラス図整理（全クラス列挙・メソッド表記省略）
+## 実行順
+- [ ] 1. Unity Editor で Android 横向き想定サイズの RoomBrowser 収まり確認
+- [ ] 2. Android 実機で RoomBrowser の文字サイズと操作サイズの最終確認
+- [ ] 3. 2クライアントで一覧参加と同期確認
+- [ ] 4. 仕上げのドキュメント整合と不要メモ削除
 
-## メモ（必要ならリンク）
-- 詳細：./.codex/tasks/（必要になったら作る）
-
-- [x] 12. Lobby導入: HostのLobby作成/Heartbeat/削除を追加
-- [x] 13. Lobby導入: ClientのLobby自動参加でJoinCode入力を不要化
-- [x] 14. SelectNetworkStateのClient接続呼び出しをLobby自動参加（StartClientFromLobbyAsync）へ統一
-- [x] 15. エモート実装: Play中のUIボタン送信とNetworkPlayer頭上2秒表示の同期
+## 完了済み
+- [x] Relay + Lobby 導線へ移行し、JoinCode 手入力を不要化
+- [x] RoomBrowser を UI Toolkit 構成で追加
+- [x] RoomBrowser を Android 専用・横向き前提へ整理
+- [x] RoomBrowser を `参加 / 作成` タブ切替へ整理
+- [x] PanelSettings を実行時上書きで使う構成へ整理
+- [x] RoomBrowser の一覧更新に 429 対策を追加
+- [x] 今回の変更は `git staging` で確認できる状態まで反映

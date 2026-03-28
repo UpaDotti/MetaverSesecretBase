@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Netcode;
@@ -12,6 +13,25 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+
+/// <summary>
+/// 部屋一覧に表示するLobby要約情報
+/// </summary>
+public readonly struct LobbySummary
+{
+    public readonly string LobbyId;
+    public readonly string LobbyName;
+    public readonly int PlayerCount;
+    public readonly int MaxPlayers;
+
+    public LobbySummary(string lobbyId, string lobbyName, int playerCount, int maxPlayers)
+    {
+        LobbyId = lobbyId;
+        LobbyName = lobbyName;
+        PlayerCount = playerCount;
+        MaxPlayers = maxPlayers;
+    }
+}
 
 /// <summary>
 /// UnityRelayのネットワーク接続サービス
@@ -56,7 +76,7 @@ public class RelayConnectionService : MonoBehaviour
     /// <summary>
     /// ホスト接続開始
     /// </summary>
-    public async Task<bool> StartHostAsync(int maxConnections = 4)
+    public async Task<bool> StartHostAsync(string roomName, int maxConnections = 4)
     {
         try
         {
@@ -81,7 +101,7 @@ public class RelayConnectionService : MonoBehaviour
             }
 
             // JoinCodeを持つLobbyを作成
-            bool lobbyCreated = await CreateHostLobbyAsync(maxConnections + 1, joinCode);
+            bool lobbyCreated = await CreateHostLobbyAsync(maxConnections + 1, joinCode, roomName);
             if (!lobbyCreated)
             {
                 Debug.LogWarning("[Lobby] Host started, but lobby creation failed.");
@@ -141,42 +161,22 @@ public class RelayConnectionService : MonoBehaviour
     /// <summary>
     /// Lobby一覧から自動参加してクライアント接続開始
     /// </summary>
-    public async Task<bool> StartClientFromLobbyAsync()
+    public async Task<bool> StartClientFromLobbyAsync(string lobbyId)
     {
         try
         {
             // 初期化
             await EnsureUnityServicesReadyAsync();
 
-            // 参加可能Lobbyを取得
-            QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(new QueryLobbiesOptions
+            // LobbyId形式を確認
+            if (string.IsNullOrWhiteSpace(lobbyId))
             {
-                // 1件のみ取得
-                Count = 1,
-
-                // 参加可能なLobbyのみ
-                Filters = new List<QueryFilter>
-                {
-                    new(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT),
-                },
-
-                // 新しい順にソート
-                Order = new List<QueryOrder>
-                {
-                    new(true, QueryOrder.FieldOptions.Created),
-                },
-            });
-
-            // 参加可能なLobbyがない場合は失敗
-            if (queryResponse.Results == null || queryResponse.Results.Count == 0)
-            {
-                Debug.LogWarning("[Lobby] No available lobby found.");
+                Debug.LogError("[Lobby] LobbyId is empty.");
                 return false;
             }
 
-            // 一番新しいLobbyに参加
-            Lobby lobby = queryResponse.Results[0];
-            Lobby joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id);
+            // 指定Lobbyに参加
+            Lobby joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
 
             // LobbyからJoinCodeを取得
             if (joinedLobby.Data == null || !joinedLobby.Data.TryGetValue(LobbyJoinCodeKey, out DataObject joinCodeData))
@@ -216,18 +216,62 @@ public class RelayConnectionService : MonoBehaviour
     }
 
     /// <summary>
+    /// 参加可能なLobby一覧を取得
+    /// </summary>
+    public async Task<IReadOnlyList<LobbySummary>> QueryAvailableLobbiesAsync(int count = 20)
+    {
+        // 初期化
+        await EnsureUnityServicesReadyAsync();
+
+        QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(new QueryLobbiesOptions
+        {
+            // 一度に取得するLobbyの最大数
+            Count = count,
+
+            // 参加可能なLobbyのみをフィルタリング
+            Filters = new List<QueryFilter>
+            {
+                new(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT),
+            },
+
+            // 作成日時の降順でソート
+            Order = new List<QueryOrder>
+            {
+                new(true, QueryOrder.FieldOptions.Created),
+            },
+        });
+
+        // 取得したLobbyをLobbySummaryに変換
+        if (queryResponse.Results == null)
+        {
+            return Array.Empty<LobbySummary>();
+        }
+
+        // LobbyのNameが空の場合は、LobbyNamePrefixと作成時間で名前を生成する
+        return queryResponse.Results
+            .Select(lobby => new LobbySummary(
+                lobby.Id,
+                string.IsNullOrWhiteSpace(lobby.Name) ? LobbyNamePrefix : lobby.Name,
+                lobby.MaxPlayers - lobby.AvailableSlots,
+                lobby.MaxPlayers))
+            .ToArray();
+    }
+
+    /// <summary>
     /// Unity Services初期化と認証
     /// </summary>
     private async Task EnsureUnityServicesReadyAsync()
     {
         if (!_isInitialized)
         {
+            // Unity Servicesを初期化
             await UnityServices.InitializeAsync();
             _isInitialized = true;
         }
 
         if (!AuthenticationService.Instance.IsSignedIn)
         {
+            // 匿名サインイン
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
     }
@@ -251,7 +295,7 @@ public class RelayConnectionService : MonoBehaviour
     /// <summary>
     /// Host用Lobbyを作成
     /// </summary>
-    private async Task<bool> CreateHostLobbyAsync(int maxPlayers, string joinCode)
+    private async Task<bool> CreateHostLobbyAsync(int maxPlayers, string joinCode, string roomName)
     {
         try
         {
@@ -263,7 +307,7 @@ public class RelayConnectionService : MonoBehaviour
             }
 
             // Lobby名を生成
-            string lobbyName = $"{LobbyNamePrefix}-{DateTime.UtcNow:HHmmss}";
+            string lobbyName = BuildLobbyName(roomName);
 
             // Lobby作成オプションを作成
             CreateLobbyOptions options = new()
@@ -293,6 +337,19 @@ public class RelayConnectionService : MonoBehaviour
             Debug.LogError($"[Lobby] CreateHostLobbyAsync failed: {ex.Message}");
             return false;
         }
+    }
+
+    /// <summary>
+    /// 部屋名を正規化して生成
+    /// </summary>
+    private string BuildLobbyName(string roomName)
+    {
+        if (!string.IsNullOrWhiteSpace(roomName))
+        {
+            return roomName.Trim();
+        }
+
+        return $"{LobbyNamePrefix}-{DateTime.UtcNow:HHmmss}";
     }
 
     /// <summary>

@@ -92,5 +92,7 @@ public enum UIState
     NameInput,
     CharacterSelect,
     NetworkSelect,
-    JoinCodeInput
+    JoinCodeInput,
+    RoomList,
+    RoomCreate
 }

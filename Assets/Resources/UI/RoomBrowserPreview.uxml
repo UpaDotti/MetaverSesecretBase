@@ -1,0 +1,64 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="project://database/Assets/Resources/UI/RoomBrowser.uss?fileID=7433441132597879392&amp;guid=e2f3a4b5c6d7890123456789abcdef01&amp;type=3#RoomBrowser" />
+
+    <ui:VisualElement name="room-browser-preview-root" class="room-browser-root">
+        <ui:VisualElement class="room-browser-shell">
+            <ui:VisualElement class="room-browser-panel">
+                <ui:VisualElement class="panel-header">
+                    <ui:VisualElement class="panel-header__text">
+                        <ui:Label text="部屋一覧" class="panel-title" />
+                        <ui:Label text="参加と作成を切り替えながら操作してください" class="panel-caption" />
+                    </ui:VisualElement>
+
+                    <ui:VisualElement class="tab-bar">
+                        <ui:Button text="参加" class="tab-button is-active" />
+                        <ui:Button text="作成" class="tab-button tab-button--last" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="panel-content">
+                    <ui:VisualElement class="tab-section">
+                        <ui:VisualElement class="section-header">
+                            <ui:Label text="参加する部屋" class="section-title" />
+                            <ui:Label text="部屋数: 3" class="panel-status" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="list-surface">
+                            <ui:Label text="参加できる部屋がありません" class="empty-label is-hidden" />
+
+                            <ui:VisualElement class="room-list-view">
+                                <ui:VisualElement class="room-row">
+                                    <ui:VisualElement class="room-row__text">
+                                        <ui:Label text="初心者歓迎ルーム" class="room-row__name" />
+                                        <ui:Label text="1 / 4 人が参加中" class="room-row__capacity" />
+                                    </ui:VisualElement>
+                                    <ui:Button text="参加" class="room-row__button" />
+                                </ui:VisualElement>
+
+                                <ui:VisualElement class="room-row">
+                                    <ui:VisualElement class="room-row__text">
+                                        <ui:Label text="雑談しながら探索" class="room-row__name" />
+                                        <ui:Label text="3 / 6 人が参加中" class="room-row__capacity" />
+                                    </ui:VisualElement>
+                                    <ui:Button text="参加" class="room-row__button" />
+                                </ui:VisualElement>
+
+                                <ui:VisualElement class="room-row">
+                                    <ui:VisualElement class="room-row__text">
+                                        <ui:Label text="高難度チャレンジ" class="room-row__name" />
+                                        <ui:Label text="4 / 4 人が参加中" class="room-row__capacity" />
+                                    </ui:VisualElement>
+                                    <ui:Button text="参加" class="room-row__button" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="section-actions">
+                            <ui:Button text="一覧を更新" class="secondary-button action-button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
