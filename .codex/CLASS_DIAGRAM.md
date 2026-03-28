@@ -19,7 +19,6 @@ classDiagram
     class StateContext
     class InputNameState
     class SelectCharacterState
-    class SelectNetworkState
     class RoomBrowseState
     class PlayState
 
@@ -39,13 +38,11 @@ classDiagram
 
     IState <|.. InputNameState : implements
     IState <|.. SelectCharacterState : implements
-    IState <|.. SelectNetworkState : implements
     IState <|.. RoomBrowseState : implements
     IState <|.. PlayState : implements
 
     InputNameState --> StateContext : uses
     SelectCharacterState --> StateContext : uses
-    SelectNetworkState --> StateContext : uses
     RoomBrowseState --> StateContext : uses
     PlayState --> StateContext : uses
 
@@ -68,10 +65,10 @@ classDiagram
 ## 関係の要点
 - `StateManager` が状態遷移のオーケストレーター（全体進行役）です。
 - 各 `*State` は `StateContext` 経由で必要機能にアクセスします。
-- `RelayConnectionService` は Relay 接続の専用責務で、`SelectNetworkState` から呼ばれます。
+- `RelayConnectionService` は Relay 接続の専用責務で、`RoomBrowseState` から呼ばれます。
 - `PlayerManager` はローカル入力結果を `NetworkPlayer` 初期化と移動開始に反映します。
 - `StateContext` は `UIManager` と `NameInputUIController` と `CharacterSelectUIController` と `RoomBrowserUIController` を保持します。
-- `UIManager` は未移行の uGUI メニューUIと Play UI の facade です。
+- `UIManager` は未移行の uGUI Play UI の facade です。
 - `NameInputUIController` は 名前入力専用の UI Toolkit 管理を担当します。
 - `CharacterSelectUIController` は キャラ選択専用の UI Toolkit 管理を担当します。
 - `RoomBrowserUIController` は RoomBrowser 専用の UI Toolkit 管理を担当します。

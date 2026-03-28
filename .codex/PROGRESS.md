@@ -4,12 +4,13 @@
 - `Next` は最大 3 つまで
 
 ## 状態
-- 進捗：95%
-- Doing：接続選択UIの必要有無整理
+- 進捗：96%
+- Doing：エモート操作UIの移行方針整理
 - Next：
-  1. 接続選択UIの必要有無整理
-  2. エモート操作UIの移行方針整理
-  3. 旧uGUI整理の手順整理
+  1. エモート操作UIの移行方針整理
+  2. 旧uGUI整理の手順整理
+  3. 各 UI の遷移とイベント重複確認項目を整理
+- Done（直近）：uGUI の接続選択処理を不要化し、コードと仕様から外した
 - Done（直近）：キャラ選択UIを UI Toolkit 管理へ分離した
 - Done（直近）：SelectCharacterState を UIManager 依存から外した
 - Done（直近）：InputNameState を UIManager 依存から外した

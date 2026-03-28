@@ -333,13 +333,11 @@ public class PlayState : IState
 
     void IState.Enter()
     {
-        _stateContext.UIManager.ShowUI(UIState.None);
         _stateContext.UIManager.ShowPlayUI(_stateContext.PlayerManager.SendEmote);
     }
 
     void IState.Exit()
     {
-        _stateContext.UIManager.ShowUI(UIState.None);
         _stateContext.UIManager.HidePlayUI();
     }
 
