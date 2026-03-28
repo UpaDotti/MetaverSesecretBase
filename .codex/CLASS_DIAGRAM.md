@@ -20,6 +20,7 @@ classDiagram
     class InputNameState
     class SelectCharacterState
     class SelectNetworkState
+    class RoomBrowseState
     class PlayState
 
     class RelayConnectionService
@@ -28,6 +29,7 @@ classDiagram
     class PlayerMoveController
     class NetworkPlayer
     class UIManager
+    class RoomBrowserUIController
     class CharacterSpriteDB
 
     StateManager --> IState : manages state flow
@@ -36,14 +38,17 @@ classDiagram
     IState <|.. InputNameState : implements
     IState <|.. SelectCharacterState : implements
     IState <|.. SelectNetworkState : implements
+    IState <|.. RoomBrowseState : implements
     IState <|.. PlayState : implements
 
     InputNameState --> StateContext : uses
     SelectCharacterState --> StateContext : uses
     SelectNetworkState --> StateContext : uses
+    RoomBrowseState --> StateContext : uses
     PlayState --> StateContext : uses
 
     StateContext --> UIManager : has
+    StateContext --> RoomBrowserUIController : has
     StateContext --> PlayerManager : has
     StateContext --> NetworkManager : has (external)
     StateContext --> RelayConnectionService : has
@@ -60,3 +65,6 @@ classDiagram
 - 各 `*State` は `StateContext` 経由で必要機能にアクセスします。
 - `RelayConnectionService` は Relay 接続の専用責務で、`SelectNetworkState` から呼ばれます。
 - `PlayerManager` はローカル入力結果を `NetworkPlayer` 初期化と移動開始に反映します。
+- `StateContext` は現状 `UIManager` と `RoomBrowserUIController` の二系統UIを保持します。
+- `RoomBrowserUIController` は UI Toolkit 化済みの部屋一覧UIを担当します。
+- `UIManager` は現状 uGUI 依存のメニューUI管理で、今後は UI Toolkit ベースへ寄せる前提です。

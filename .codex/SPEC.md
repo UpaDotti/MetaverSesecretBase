@@ -14,6 +14,10 @@
 - 依存方向は外 → 内を維持する
 - 接続は Unity Relay + Lobby を使う
 - Client は Lobby 一覧から参加し、Join Code は Lobby Data から取得する
+- メニューUIは UIごとに分割して段階的に UI Toolkit へ寄せる
+- RoomBrowser は UI Toolkit への移行が完了済みとする
+- 未移行のメニューUIは `名前入力 / キャラ選択 / 接続選択 / エモート操作` として扱う
+- `Player.prefab` の頭上UIは今回の UI Toolkit 移行対象に含めない
 - RoomBrowser は UI Toolkit の共通 UXML / USS / C# 構成で管理する
 - RoomBrowser は `参加 / 作成` のタブ切替を基本とする
 - RoomBrowser の表示倍率は Android 実機を正とし、PanelSettings は実行時に横向き基準へ上書きして使う
