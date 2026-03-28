@@ -17,6 +17,7 @@ public class NetworkPlayer : NetworkBehaviour
 
     [SerializeField]
     private CharacterSpriteDB _characterSpriteDB;
+    public CharacterSpriteDB CharacterSpriteDB => _characterSpriteDB;
 
     [SerializeField]
     private EmoteSpriteDB _emoteSpriteDB;

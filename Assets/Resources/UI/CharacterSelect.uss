@@ -1,0 +1,118 @@
+/* キャラ選択UIの全体配置 */
+.character-select-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+    background-color: rgba(10, 18, 24, 0.82);
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    overflow: hidden;
+}
+
+.character-select-shell {
+    max-width: 880px;
+    align-self: center;
+}
+
+.character-select-panel {
+    max-height: 100%;
+}
+
+.character-list-section {
+    flex-grow: 1;
+    min-height: 0;
+    flex-direction: column;
+}
+
+.character-list-view {
+    flex-grow: 1;
+    min-height: 0;
+    overflow: hidden;
+    background-color: transparent;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.character-row {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-left: 13px;
+    padding-right: 13px;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    background-color: rgb(255, 251, 244);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgb(205, 191, 173);
+    border-right-color: rgb(205, 191, 173);
+    border-top-color: rgb(205, 191, 173);
+    border-bottom-color: rgb(205, 191, 173);
+}
+
+.character-row__preview {
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+    margin-right: 14px;
+    background-color: rgb(228, 219, 204);
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.character-row__text {
+    flex-grow: 1;
+    min-width: 0;
+    flex-direction: column;
+}
+
+.character-row__name {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(48, 39, 30);
+}
+
+.character-row__caption {
+    font-size: 14px;
+    color: rgb(116, 92, 67);
+    margin-top: 4px;
+}
+
+.character-row__button {
+    width: 160px;
+    min-width: 0;
+    flex-shrink: 0;
+    height: 48px;
+    margin-left: 12px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    background-color: rgb(191, 123, 71);
+    color: rgb(255, 248, 241);
+    font-size: 16px;
+    -unity-font-style: bold;
+}

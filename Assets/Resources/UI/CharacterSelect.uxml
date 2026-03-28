@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="character-select-root" class="character-select-root">
+        <ui:VisualElement class="character-select-shell panel-shell">
+            <ui:VisualElement class="character-select-panel panel-surface">
+                <ui:VisualElement class="panel-header">
+                    <ui:VisualElement class="panel-header__text">
+                        <ui:Label text="キャラクター選択" class="panel-title" />
+                        <ui:Label text="見た目を選ぶと部屋一覧へ進みます" class="panel-caption" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <ui:VisualElement class="panel-content">
+                    <ui:VisualElement name="character-list-section" class="character-list-section">
+                        <ui:VisualElement class="section-header">
+                            <ui:Label text="使うキャラクター" class="section-title" />
+                            <ui:Label name="character-status-label" class="panel-status" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="list-surface">
+                            <ui:ListView name="character-list-view" class="character-list-view" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

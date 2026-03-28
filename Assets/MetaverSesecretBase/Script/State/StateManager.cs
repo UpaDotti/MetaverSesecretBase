@@ -19,6 +19,7 @@ public class StateManager : MonoBehaviour
         var networkManager = FindAnyObjectByType<NetworkManager>();
         var uiManager = FindAnyObjectByType<UIManager>();
         var nameInputUIController = FindAnyObjectByType<NameInputUIController>();
+        var characterSelectUIController = FindAnyObjectByType<CharacterSelectUIController>();
         var roomBrowserUIController = FindAnyObjectByType<RoomBrowserUIController>();
         var playerManager = FindAnyObjectByType<PlayerManager>();
         var relayConnectionService = FindAnyObjectByType<RelayConnectionService>();
@@ -30,7 +31,14 @@ public class StateManager : MonoBehaviour
             nameInputUIController = controllerObject.AddComponent<NameInputUIController>();
         }
 
-        _context = new StateContext(uiManager, nameInputUIController, roomBrowserUIController, playerManager, networkManager, relayConnectionService);
+        // キャラ選択UIの参照を自動補完する
+        if (characterSelectUIController == null)
+        {
+            GameObject controllerObject = new GameObject("CharacterSelectUIController");
+            characterSelectUIController = controllerObject.AddComponent<CharacterSelectUIController>();
+        }
+
+        _context = new StateContext(uiManager, nameInputUIController, characterSelectUIController, roomBrowserUIController, playerManager, networkManager, relayConnectionService);
     }
 
 

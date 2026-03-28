@@ -64,12 +64,15 @@ public class SelectCharacterState : IState
 
     void IState.Enter()
     {
-        _stateContext.UIManager.ShowCharacterSelect(SetCharacterId);
+        _stateContext.CharacterSelectUIController.SetInteractable(true);
+        _stateContext.CharacterSelectUIController.CharacterSelected += SetCharacterId;
+        _stateContext.CharacterSelectUIController.Show();
     }
 
     void IState.Exit()
     {
-        _stateContext.UIManager.HideCharacterSelect();
+        _stateContext.CharacterSelectUIController.CharacterSelected -= SetCharacterId;
+        _stateContext.CharacterSelectUIController.Hide();
     }
 
     private void Complete()
@@ -353,6 +356,7 @@ public class StateContext
 {
     public readonly UIManager UIManager;
     public readonly NameInputUIController NameInputUIController;
+    public readonly CharacterSelectUIController CharacterSelectUIController;
     public readonly RoomBrowserUIController RoomBrowserUIController;
     public readonly PlayerManager PlayerManager;
     public readonly NetworkManager NetworkManager;
@@ -361,6 +365,7 @@ public class StateContext
     public StateContext(
         UIManager uiManager,
         NameInputUIController nameInputUIController,
+        CharacterSelectUIController characterSelectUIController,
         RoomBrowserUIController roomBrowserUIController,
         PlayerManager playerManager,
         NetworkManager networkManager,
@@ -368,6 +373,7 @@ public class StateContext
     {
         UIManager = uiManager;
         NameInputUIController = nameInputUIController;
+        CharacterSelectUIController = characterSelectUIController;
         RoomBrowserUIController = roomBrowserUIController;
         PlayerManager = playerManager;
         NetworkManager = networkManager;

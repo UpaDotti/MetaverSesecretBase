@@ -16,11 +16,13 @@
 - Client は Lobby 一覧から参加し、Join Code は Lobby Data から取得する
 - メニューUIは UIごとに分割して段階的に UI Toolkit へ寄せる
 - 名前入力UIは UI Toolkit への移行が完了済みとする
+- キャラ選択UIは UI Toolkit への移行が完了済みとする
 - `UIManager` は未移行の uGUI メニューUIと Play UI の公開窓口として残し、State は意図ベース API 経由で触る
 - RoomBrowser は UI Toolkit への移行が完了済みとする
 - `NameInputUIController` は 名前入力専用の UI Toolkit 管理責務として `UIManager` から分離して扱う
+- `CharacterSelectUIController` は キャラ選択専用の UI Toolkit 管理責務として `UIManager` から分離して扱う
 - `RoomBrowserUIController` は RoomBrowser 専用の UI Toolkit 管理責務として `UIManager` から分離して扱う
-- 未移行のメニューUIは `キャラ選択 / 接続選択 / エモート操作` として扱う
+- 未移行のメニューUIは `接続選択 / エモート操作` として扱う
 - `Player.prefab` の頭上UIは今回の UI Toolkit 移行対象に含めない
 - RoomBrowser は UI Toolkit の共通 UXML / USS / C# 構成で管理する
 - RoomBrowser は `参加 / 作成` のタブ切替を基本とする

@@ -7,16 +7,6 @@ using UnityEngine.UI;
 /// </summary>
 public class UIManager : MonoBehaviour
 {
-    [Header("Characte Select UI")]
-    [SerializeField]
-    private GameObject _characteSelectUI;
-
-    [SerializeField]
-    private Button _characterButton0;
-
-    [SerializeField]
-    private Button _characterButton1;
-
     [Header("Network Select UI")]
     [SerializeField]
     private GameObject _networkSelectUI;
@@ -48,28 +38,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ShowUI(UIState state)
     {
-        _characteSelectUI?.SetActive(state == UIState.CharacterSelect);
         _networkSelectUI?.SetActive(state == UIState.NetworkSelect);
-    }
-
-    /// <summary>
-    /// キャラクター選択UIを表示してイベントを購読
-    /// </summary>
-    public void ShowCharacterSelect(Action<int> onCharacterSelected)
-    {
-        ShowUI(UIState.CharacterSelect);
-        _characterButton0.onClick.AddListener(() => onCharacterSelected.Invoke(0));
-        _characterButton1.onClick.AddListener(() => onCharacterSelected.Invoke(1));
-    }
-
-    /// <summary>
-    /// キャラクター選択UIのイベント購読を解除
-    /// </summary>
-    public void HideCharacterSelect()
-    {
-        ShowUI(UIState.None);
-        _characterButton0.onClick.RemoveAllListeners();
-        _characterButton1.onClick.RemoveAllListeners();
     }
 
     /// <summary>
@@ -103,6 +72,5 @@ public class UIManager : MonoBehaviour
 public enum UIState
 {
     None,
-    CharacterSelect,
     NetworkSelect
 }
