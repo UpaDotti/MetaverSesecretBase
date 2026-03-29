@@ -1,0 +1,71 @@
+.emote-root {
+    position: absolute;
+    left: 24px;
+    bottom: 24px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.emote-shell {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(18, 26, 34, 0.78);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgba(255, 248, 241, 0.24);
+    border-right-color: rgba(255, 248, 241, 0.24);
+    border-top-color: rgba(255, 248, 241, 0.24);
+    border-bottom-color: rgba(255, 248, 241, 0.24);
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.emote-button-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
+.emote-button {
+    width: 92px;
+    min-width: 0;
+    height: 92px;
+    flex-shrink: 0;
+    margin-right: 10px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: rgb(255, 251, 244);
+    -unity-background-scale-mode: scale-to-fit;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgb(217, 205, 188);
+    border-right-color: rgb(217, 205, 188);
+    border-top-color: rgb(217, 205, 188);
+    border-bottom-color: rgb(217, 205, 188);
+}
+
+.emote-button--last {
+    margin-right: 0;
+}

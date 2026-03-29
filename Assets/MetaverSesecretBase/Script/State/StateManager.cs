@@ -17,10 +17,10 @@ public class StateManager : MonoBehaviour
     private void Awake()
     {
         var networkManager = FindAnyObjectByType<NetworkManager>();
-        var uiManager = FindAnyObjectByType<UIManager>();
         var nameInputUIController = FindAnyObjectByType<NameInputUIController>();
         var characterSelectUIController = FindAnyObjectByType<CharacterSelectUIController>();
         var roomBrowserUIController = FindAnyObjectByType<RoomBrowserUIController>();
+        var emoteUIController = FindAnyObjectByType<EmoteUIController>();
         var playerManager = FindAnyObjectByType<PlayerManager>();
         var relayConnectionService = FindAnyObjectByType<RelayConnectionService>();
 
@@ -38,7 +38,14 @@ public class StateManager : MonoBehaviour
             characterSelectUIController = controllerObject.AddComponent<CharacterSelectUIController>();
         }
 
-        _context = new StateContext(uiManager, nameInputUIController, characterSelectUIController, roomBrowserUIController, playerManager, networkManager, relayConnectionService);
+        // エモートUIの参照を自動補完する
+        if (emoteUIController == null)
+        {
+            GameObject controllerObject = new GameObject("EmoteUIController");
+            emoteUIController = controllerObject.AddComponent<EmoteUIController>();
+        }
+
+        _context = new StateContext(nameInputUIController, characterSelectUIController, roomBrowserUIController, emoteUIController, playerManager, networkManager, relayConnectionService);
     }
 
 

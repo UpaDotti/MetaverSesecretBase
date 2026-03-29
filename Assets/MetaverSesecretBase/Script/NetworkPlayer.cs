@@ -22,6 +22,11 @@ public class NetworkPlayer : NetworkBehaviour
     [SerializeField]
     private EmoteSpriteDB _emoteSpriteDB;
 
+    /// <summary>
+    /// 利用可能なエモート数を返す
+    /// </summary>
+    public int EmoteCount => _emoteSpriteDB?.EmoteCount ?? 0;
+
     private NetworkVariable<FixedString64Bytes> _playerName = new();
     private NetworkVariable<int> _characterId = new();
     private NetworkVariable<int> _emoteId = new(-1);
@@ -142,5 +147,20 @@ public class NetworkPlayer : NetworkBehaviour
 
         _emoteId.Value = emoteId;
         _emoteSequence.Value++;
+    }
+
+    /// <summary>
+    /// エモートIDに対応するスプライトを取得する
+    /// </summary>
+    public bool TryGetEmoteSprite(int emoteId, out Sprite sprite)
+    {
+        sprite = null;
+
+        if (_emoteSpriteDB == null)
+        {
+            return false;
+        }
+
+        return _emoteSpriteDB.TryGetEmoteSprite(emoteId, out sprite);
     }
 }

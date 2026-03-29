@@ -50,6 +50,11 @@ public class PlayerManager : MonoBehaviour
 
     public void SendEmote(int emoteId)
     {
+        if (_networkPlayer == null)
+        {
+            return;
+        }
+
         _networkPlayer.SendEmoteServerRpc(emoteId);
     }
 }

@@ -333,12 +333,15 @@ public class PlayState : IState
 
     void IState.Enter()
     {
-        _stateContext.UIManager.ShowPlayUI(_stateContext.PlayerManager.SendEmote);
+        _stateContext.EmoteUIController.SetInteractable(true);
+        _stateContext.EmoteUIController.EmoteSelected += _stateContext.PlayerManager.SendEmote;
+        _stateContext.EmoteUIController.Show();
     }
 
     void IState.Exit()
     {
-        _stateContext.UIManager.HidePlayUI();
+        _stateContext.EmoteUIController.EmoteSelected -= _stateContext.PlayerManager.SendEmote;
+        _stateContext.EmoteUIController.Hide();
     }
 
     private void Complete()
@@ -352,27 +355,27 @@ public class PlayState : IState
 /// </summary>
 public class StateContext
 {
-    public readonly UIManager UIManager;
     public readonly NameInputUIController NameInputUIController;
     public readonly CharacterSelectUIController CharacterSelectUIController;
     public readonly RoomBrowserUIController RoomBrowserUIController;
+    public readonly EmoteUIController EmoteUIController;
     public readonly PlayerManager PlayerManager;
     public readonly NetworkManager NetworkManager;
     public readonly RelayConnectionService RelayConnectionService;
 
     public StateContext(
-        UIManager uiManager,
         NameInputUIController nameInputUIController,
         CharacterSelectUIController characterSelectUIController,
         RoomBrowserUIController roomBrowserUIController,
+        EmoteUIController emoteUIController,
         PlayerManager playerManager,
         NetworkManager networkManager,
         RelayConnectionService relayConnectionService)
     {
-        UIManager = uiManager;
         NameInputUIController = nameInputUIController;
         CharacterSelectUIController = characterSelectUIController;
         RoomBrowserUIController = roomBrowserUIController;
+        EmoteUIController = emoteUIController;
         PlayerManager = playerManager;
         NetworkManager = networkManager;
         RelayConnectionService = relayConnectionService;

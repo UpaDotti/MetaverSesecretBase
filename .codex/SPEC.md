@@ -17,13 +17,15 @@
 - メニューUIは UIごとに分割して段階的に UI Toolkit へ寄せる
 - 名前入力UIは UI Toolkit への移行が完了済みとする
 - キャラ選択UIは UI Toolkit への移行が完了済みとする
-- `UIManager` は未移行の uGUI Play UI の公開窓口として残し、State は意図ベース API 経由で触る
 - RoomBrowser は UI Toolkit への移行が完了済みとする
 - `NameInputUIController` は 名前入力専用の UI Toolkit 管理責務として `UIManager` から分離して扱う
 - `CharacterSelectUIController` は キャラ選択専用の UI Toolkit 管理責務として `UIManager` から分離して扱う
 - `RoomBrowserUIController` は RoomBrowser 専用の UI Toolkit 管理責務として `UIManager` から分離して扱う
-- 未移行のメニューUIは `エモート操作` として扱う
+- `EmoteUIController` は プレイ中のエモート操作専用の UI Toolkit 管理責務として State から直接扱う
+- エモート操作UIは UI Toolkit への移行が完了済みとする
 - `Player.prefab` の頭上UIは今回の UI Toolkit 移行対象に含めない
+- エモート操作UIは `EmoteSpriteDB` を元に実行時にボタンを組み立てる
+- エモート操作UIは 専用 `UXML / USS` で外枠と見た目を持ち、可変個数のボタンだけを `C#` で生成する
 - RoomBrowser は UI Toolkit の共通 UXML / USS / C# 構成で管理する
 - RoomBrowser は `参加 / 作成` のタブ切替を基本とする
 - RoomBrowser の表示倍率は Android 実機を正とし、PanelSettings は実行時に横向き基準へ上書きして使う

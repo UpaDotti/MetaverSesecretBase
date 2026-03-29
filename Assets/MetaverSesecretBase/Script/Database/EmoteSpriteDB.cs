@@ -8,6 +8,11 @@ public class EmoteSpriteDB : ScriptableObject
     private List<Sprite> _emotes;
 
     /// <summary>
+    /// 登録済みエモート数を返す
+    /// </summary>
+    public int EmoteCount => _emotes?.Count ?? 0;
+
+    /// <summary>
     /// エモートIDからスプライトを取得する
     /// </summary>
     public bool TryGetEmoteSprite(int emoteId, out Sprite sprite)

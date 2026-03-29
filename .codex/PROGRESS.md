@@ -4,12 +4,16 @@
 - `Next` は最大 3 つまで
 
 ## 状態
-- 進捗：96%
-- Doing：エモート操作UIの移行方針整理
+- 進捗：98%
+- Doing：旧uGUI整理の手順整理
 - Next：
-  1. エモート操作UIの移行方針整理
-  2. 旧uGUI整理の手順整理
-  3. 各 UI の遷移とイベント重複確認項目を整理
+  1. 旧uGUI整理の手順整理
+  2. 各 UI の遷移とイベント重複確認項目を整理
+  3. Unity Editor で Android 横向き想定サイズの確認
+- Done（直近）：エモート操作UIを専用 UXML / USS と動的ボタン生成の分担へ戻した
+- Done（直近）：エモート操作UIを最小構成で作り直し、左下固定の横並びへ寄せた
+- Done（直近）：エモート操作UIを UI Toolkit 管理へ分離した
+- Done（直近）：PlayState を UIManager 依存から外した
 - Done（直近）：uGUI の接続選択処理を不要化し、コードと仕様から外した
 - Done（直近）：キャラ選択UIを UI Toolkit 管理へ分離した
 - Done（直近）：SelectCharacterState を UIManager 依存から外した

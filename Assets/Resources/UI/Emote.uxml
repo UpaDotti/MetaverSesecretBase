@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement name="emote-root" class="emote-root">
+        <ui:VisualElement name="emote-shell" class="emote-shell">
+            <ui:VisualElement name="emote-button-row" class="emote-button-row" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

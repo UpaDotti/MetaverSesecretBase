@@ -8,7 +8,7 @@
 - [x] 2. 名前入力UI: 入力と確定導線の UI Toolkit 化方針を整理
 - [x] 3. キャラ選択UI: 選択導線の UI Toolkit 化方針を整理
 - [x] 4. 接続選択UI: RoomBrowser導線へ統一済みとして不要化を整理
-- [ ] 5. エモート操作UI: Play 中UIの UI Toolkit 化方針を整理
+- [x] 5. エモート操作UI: Play 中UIの UI Toolkit 化方針を整理
 - [ ] 6. 旧uGUI整理: Main.unity の旧メニュー Canvas 廃止手順を整理
 - [ ] 7. 確認: 各 UI の遷移とイベント重複確認項目を整理
 - [ ] 8. Unity Editor で Android 横向き想定サイズの RoomBrowser 収まり確認
@@ -25,4 +25,5 @@
 - [x] RoomBrowser の一覧更新に 429 対策を追加
 - [x] RoomBrowser を UI Toolkit 移行完了済みの対象として整理
 - [x] uGUI の接続選択処理を不要化し、コードと仕様から外した
+- [x] エモート操作UIを UI Toolkit 構成へ移行した
 - [x] 今回の変更は `git staging` で確認できる状態まで反映
